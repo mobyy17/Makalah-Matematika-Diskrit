@@ -1,0 +1,33 @@
+Algorithm 1: Zip Puzzle Solver (DFS + Backtracking)
+
+Input  : Grid G[n][n], waypoints W, max label max_wp
+Output : Hamiltonian path P, or ∅ if no solution exists
+
+ 1: visited[n][n] ← all False
+ 2: path ← ⟨waypoints[1]⟩ ;  visited[waypoints[1]] ← True
+ 3: next_required ← 2
+
+ 4: function DFS(r, c, next_required):
+ 5:     if |path| = n² then
+ 6:         return True                
+ 7:     for each (dr, dc) in {(−1,0),(1,0),(0,−1),(0,1)}:
+ 8:         (nr, nc) ← (r + dr, c + dc)
+ 9:         if (nr, nc) ∉ bounds(G) OR visited[nr][nc] then
+10:             continue               
+11:         cell_val ← G[nr][nc]
+12:         if cell_val > 0 then       
+13:             if cell_val ≠ next_required then
+14:                 continue           
+15:             visited[nr][nc] ← True ;  path.append((nr, nc))
+16:             nxt ← next_required + 1  if next_required < max_wp
+17:                                    else max_wp + 1
+17:             if DFS(nr, nc, nxt) then return True
+18:             path.pop() ;  visited[nr][nc] ← False
+19:         else                       
+20:             visited[nr][nc] ← True ;  path.append((nr, nc))
+21:             if DFS(nr, nc, next_required) then return True
+22:             path.pop() ;  visited[nr][nc] ← False
+23:     return False                   
+
+24: if DFS(start.r, start.c, 2) then return path
+25: else return ∅
